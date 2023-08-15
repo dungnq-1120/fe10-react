@@ -1,0 +1,10 @@
+.sidebar.active {
+  width: 30%;
+  border-right: 1px solid black;
+}
+
+.sidebar.hide {
+  width: 50px;
+  overflow: hidden;
+}
+
