@@ -1,31 +1,57 @@
-import { useRef, useState } from "react";
+import { Component, useEffect, useRef, useState } from "react";
+
 import "./App.css";
-import TodoList from "./components/todoList";
+import { getProducts } from "./services/productsApi";
+import { IProduct } from "./types/products";
+import Button from "./components/shared/button";
+import useDebounce from "./hooks/useDebounce";
 
 function App() {
-  const [isChecked, setIsChecked] = useState(false);
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [value, setValue] = useState<string>("");
 
-  const divRef = useRef<number>(0);
+  const valueDebounce = useDebounce(value, 3000);
+
+  useEffect(() => {
+    getProducts().then((response) => {
+      setProducts(response);
+    });
+  }, []);
+
+  useEffect(() => {
+    getProducts({
+      title_like: valueDebounce,
+    }).then((response) => {
+      setProducts(response);
+    });
+  }, [valueDebounce]);
 
   return (
-    <>
-      <div
+    <div>
+      <input
+        className="bg-red-500 w-[500px] h-[50px]"
+        onChange={(e) => setValue(e.target.value)}
+      />
+      {/* <Button
         onClick={() => {
-          divRef.current = divRef.current + 1;
-          console.log(divRef.current);
+          
         }}
-        className="w-[100px] h-[100px] bg-red-500"
-        // ref={divRef}
       >
-        {isChecked && <TodoList />}
-        {divRef.current}
-      </div>
+        Search
+      </Button> */}
 
-      <div onClick={() => setIsChecked(!isChecked)}>2</div>
-    </>
+      {products.map((product) => (
+        <div key={product.id}> {product.title}</div>
+      ))}
+    </div>
   );
 }
 
 export default App;
 
-// // Props
+// 2 loai Component
+
+//   - controlled Component
+//   - uncontrolled Component
+
+// debounce;
