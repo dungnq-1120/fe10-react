@@ -1,57 +1,52 @@
-import { Component, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 import { getProducts } from "./services/productsApi";
 import { IProduct } from "./types/products";
-import Button from "./components/shared/button";
-import useDebounce from "./hooks/useDebounce";
+import { useAppDispatch, useAppSelector } from "./utils/redux";
+import {
+  decrementedAction,
+  incrementedAction,
+} from "./redux/action/counter.actions";
 
 function App() {
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [value, setValue] = useState<string>("");
+  const [_, setProducts] = useState<IProduct[]>([]);
 
-  const valueDebounce = useDebounce(value, 3000);
+  const counter = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getProducts().then((response) => {
-      setProducts(response);
-    });
+    getProducts()
+      .then((response) => {
+        setProducts(response);
+      })
+      .catch(() => {
+        console.log("acb");
+        // return redirect("/login");
+      });
   }, []);
-
-  useEffect(() => {
-    getProducts({
-      title_like: valueDebounce,
-    }).then((response) => {
-      setProducts(response);
-    });
-  }, [valueDebounce]);
 
   return (
     <div>
-      <input
-        className="bg-red-500 w-[500px] h-[50px]"
-        onChange={(e) => setValue(e.target.value)}
-      />
-      {/* <Button
+      Home page
+      <h1> {counter}</h1>
+      <button
         onClick={() => {
-          
+          dispatch(incrementedAction());
         }}
       >
-        Search
-      </Button> */}
-
-      {products.map((product) => (
-        <div key={product.id}> {product.title}</div>
-      ))}
+        Add
+      </button>
+      ---------------
+      <button
+        onClick={() => {
+          dispatch(decrementedAction());
+        }}
+      >
+        Sub
+      </button>
     </div>
   );
 }
 
 export default App;
-
-// 2 loai Component
-
-//   - controlled Component
-//   - uncontrolled Component
-
-// debounce;

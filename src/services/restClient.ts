@@ -22,5 +22,7 @@ export default function restClient({
     .then((res) => {
       return res.data;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      throw err;
+    });
 }
