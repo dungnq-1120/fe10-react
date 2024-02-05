@@ -1,52 +1,31 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import "./App.css";
 import { getProducts } from "./services/productsApi";
-import { IProduct } from "./types/products";
 import { useAppDispatch, useAppSelector } from "./utils/redux";
-import {
-  decrementedAction,
-  incrementedAction,
-} from "./redux/action/counter.actions";
+
+import { getProductsAction } from "./redux/reducer/product.reducer";
 
 function App() {
-  const [_, setProducts] = useState<IProduct[]>([]);
-
-  const counter = useAppSelector((state) => state.counter.value);
+  const data = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getProducts()
+    dispatch(getProductsAction());
+    getProducts({
+      _page: 1,
+    })
       .then((response) => {
-        setProducts(response);
+        // dispatch(getProductsSuccess(response.data, response.pagination));
       })
       .catch(() => {
-        console.log("acb");
-        // return redirect("/login");
+        // dispatch(getProductsFail());
       });
   }, []);
 
-  return (
-    <div>
-      Home page
-      <h1> {counter}</h1>
-      <button
-        onClick={() => {
-          dispatch(incrementedAction());
-        }}
-      >
-        Add
-      </button>
-      ---------------
-      <button
-        onClick={() => {
-          dispatch(decrementedAction());
-        }}
-      >
-        Sub
-      </button>
-    </div>
-  );
+  console.log(data);
+
+  return <div> </div>;
 }
 
 export default App;

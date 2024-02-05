@@ -1,17 +1,36 @@
-import { Counter } from "../action/constants";
-import { TAction } from "../types";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState = { value: 0, loading: true };
+const initialState = {
+  data: [],
+  isLoading: false,
+  pagination: {
+    _page: 1,
+    _limit: 10,
+    _totalRows: 0,
+  },
+};
 
-function productsReducer(state = initialState, action: TAction) {
-  switch (action.type) {
-    case Counter.INCREMENTED:
-      return { ...state, value: state.value + 2 };
-    case Counter.DECREMENTED:
-      return { ...state, value: state.value - 2 };
-    default:
-      return state;
-  }
-}
+// createAction
 
-export default productsReducer;
+// func =. {
+//   type: string, payload: {}
+// }
+
+const productsSlice = createSlice({
+  name: "products",
+  initialState,
+  reducers: {
+    getProductsAction: (state) => {
+      state.isLoading = true;
+    },
+    getProductsAction1: (state) => {
+      state.isLoading = true;
+    },
+  },
+});
+
+console.log(productsSlice);
+
+export const { getProductsAction } = productsSlice.actions;
+
+export default productsSlice.reducer;

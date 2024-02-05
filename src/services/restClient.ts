@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:4444/api";
 
-export default function restClient({
+export default function restClient<T>({
   url,
   method = "GET",
   params,
@@ -20,7 +20,7 @@ export default function restClient({
     data,
   })
     .then((res) => {
-      return res.data;
+      return res.data as T;
     })
     .catch((err) => {
       throw err;

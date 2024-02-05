@@ -1,11 +1,13 @@
-import { createStore } from "redux";
-import reducer from "./reducer/rootReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./reducer/counterReducer";
+import productsReducer from "./reducer/product.reducer";
 
-const store = createStore(
-  reducer,
-  (window as any)?.__REDUX_DEVTOOLS_EXTENSION__ &&
-    (window as any)?.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+    products: productsReducer,
+  },
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
