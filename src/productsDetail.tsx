@@ -1,10 +1,13 @@
-import { useLocation, useParams } from "react-router-dom";
+import { memo } from "react";
 
-export default function ProductDetail() {
-  const params = useParams();
-  const location = useLocation();
+export const ProductDetail = memo(function ProductDetail({
+  state,
+  renderA,
+}: {
+  state: number;
+  renderA: any;
+}) {
+  console.log("ProductDetail");
 
-  console.log(location);
-
-  return <div>Products detail - {params.productId}</div>;
-}
+  return <div>Products detail - {state}</div>;
+});

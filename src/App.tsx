@@ -1,31 +1,57 @@
-import { useEffect } from "react";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import "./App.css";
-import { getProducts } from "./services/productsApi";
-import { useAppDispatch, useAppSelector } from "./utils/redux";
 
-import { getProductsAction } from "./redux/reducer/product.reducer";
+import { useForm } from "react-hook-form";
+
+import { z } from "zod";
+
+const schema = z.object({
+  input1: z.string().min(10, "dbawhdawudbawud"),
+  input2: z.string(),
+  input3: z.string(),
+  input4: z.string(),
+});
+
+type TForm = {
+  input1: string;
+  input2: string;
+  input3: string;
+  input4: string;
+};
 
 function App() {
-  const data = useAppSelector((state) => state.products);
-  const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<TForm>({
+    defaultValues: {
+      input1: "1",
+      input2: "2",
+      input3: "3",
+      input4: "4",
+    },
+    resolver: zodResolver(schema),
+  });
 
-  useEffect(() => {
-    dispatch(getProductsAction());
-    getProducts({
-      _page: 1,
-    })
-      .then((response) => {
-        // dispatch(getProductsSuccess(response.data, response.pagination));
-      })
-      .catch(() => {
-        // dispatch(getProductsFail());
-      });
-  }, []);
+  console.log(errors);
 
-  console.log(data);
+  const onSubmit = (data: any) => console.log(data);
 
-  return <div> </div>;
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input type="text" className="border m-2" {...register("input1")} />
+        <span>{errors.input1?.message}</span>
+        <input type="text" className="border m-2" {...register("input2")} />
+        <input type="text" className="border m-2" {...register("input3")} />
+        <input type="text" className="border m-2" {...register("input4")} />
+
+        <button type="submit">submit</button>
+      </form>
+    </div>
+  );
 }
 
 export default App;
