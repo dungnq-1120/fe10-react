@@ -23,7 +23,6 @@ function App() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<TForm>({
     defaultValues: {

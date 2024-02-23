@@ -9,5 +9,9 @@ export const ProductDetail = memo(function ProductDetail({
 }) {
   console.log("ProductDetail");
 
-  return <div>Products detail - {state}</div>;
+  return (
+    <div>
+      Products detail - {state}- {renderA()}
+    </div>
+  );
 });
