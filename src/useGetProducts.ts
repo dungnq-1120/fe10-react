@@ -9,7 +9,7 @@ export default function useGetProducts() {
     },
     enabled: true,
     refetchInterval: 5000,
-    // staleTime: Infinity,
+    staleTime: Infinity,
   });
 
   console.log({ isLoading, isFetching });
