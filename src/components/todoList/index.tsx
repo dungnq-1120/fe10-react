@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 
 import TodoItem from "./components/todoItem";
 import { Todo } from "./types";
 
-export default function TodoList() {
+const TodoList = forwardRef<HTMLInputElement>((_, ref) => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
+    console.log(ref);
+
     return () => {
       console.log("unmount");
     };
@@ -62,6 +64,7 @@ export default function TodoList() {
           className="w-[200px] mr-3 border"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          ref={ref}
         />
         <button
           className="border bg-green-700 text-yellow-50 disabled:bg-slate-500 disabled:cursor-not-allowed"
@@ -81,4 +84,6 @@ export default function TodoList() {
       ))}
     </div>
   );
-}
+});
+
+export default TodoList;
